@@ -1,11 +1,16 @@
 from __future__ import annotations
 
-from typing import Sequence, Iterable, Tuple, Dict, Any
+from typing import Any
+from typing import Dict
+from typing import Iterable
+from typing import Sequence
+from typing import Tuple
 
 import clickhouse_connect
-from clickhouse_connect.driver.client import Client, QueryResult, QuerySummary
-
 from airflow.hooks.base import BaseHook
+from clickhouse_connect.driver.client import Client
+from clickhouse_connect.driver.client import QueryResult
+from clickhouse_connect.driver.client import QuerySummary
 
 
 class ClickhouseConnectHook(BaseHook):
@@ -61,7 +66,9 @@ class ClickhouseConnectHook(BaseHook):
         super().__init__()
         self.connection_id = connection_id
 
-    def get_conn(self, connection_id: str | None = None, database: str | None = None) -> Client:
+    def get_conn(
+        self, connection_id: str | None = None, database: str | None = None
+    ) -> Client:
         """
         Returns Clickhouse Connect Client.
 
@@ -96,15 +103,17 @@ class ClickhouseConnectHook(BaseHook):
         :param settings: Query settings
         :type settings: Dict[str, Any] | None
         """
-        return self.get_conn(database=database).query(sql, parameters=params, settings=settings)
-        
+        return self.get_conn(database=database).query(
+            sql, parameters=params, settings=settings
+        )
+
     def command(
         self,
         sql: str,
         database: str | None = None,
         params: Sequence | Dict[str, Any] | None = None,
         settings: Dict[str, Any] | None = None,
-    ) -> (str | int | Sequence[str] | QuerySummary):
+    ) -> str | int | Sequence[str] | QuerySummary:
         """
         Performs the SQL command with optional parameters
 
@@ -117,14 +126,16 @@ class ClickhouseConnectHook(BaseHook):
         :param settings: Query settings
         :type settings: Dict[str, Any] | None
         """
-        return self.get_conn(database=database).command(sql, parameters=params, settings=settings)
-    
+        return self.get_conn(database=database).command(
+            sql, parameters=params, settings=settings
+        )
+
     def insert(
         self,
         table: str,
         data: Sequence[Sequence[Any]],
         database: str | None = None,
-        column_names: str | Iterable[str] = '*',
+        column_names: str | Iterable[str] = "*",
     ) -> QuerySummary:
         """
         Inserts rows to database
@@ -138,7 +149,9 @@ class ClickhouseConnectHook(BaseHook):
         :param column_names: Corresponding column names
         :type column_names: str | Iterable[str] | None
         """
-        return self.get_conn(database=database).insert(table=table, data=data, column_names=column_names)
+        return self.get_conn(database=database).insert(
+            table=table, data=data, column_names=column_names
+        )
 
     def test_connection(self) -> Tuple[bool, str]:
         """Test a connection"""

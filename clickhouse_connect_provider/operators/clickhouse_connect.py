@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import TYPE_CHECKING, Any
+from typing import Any
+from typing import TYPE_CHECKING
 
 from airflow.models import BaseOperator
 
@@ -9,8 +10,8 @@ from clickhouse_connect_provider.hooks.clickhouse_connect import ClickhouseConne
 
 if TYPE_CHECKING:
     from airflow.utils.context import Context
-    
-    
+
+
 class ActionType(Enum):
     QUERY = 1
     COMMAND = 2
@@ -53,11 +54,13 @@ class ClickhouseConnectOperator(BaseOperator):
         hook = ClickhouseConnectHook(self.connection_id)
 
         self.log.info(f"Executing {self.action}: {self.sql}")
-        
+
         match self.action:
             case ActionType.QUERY:
                 return hook.query(self.sql, database=self.database, params=self.params)
             case ActionType.COMMAND:
-                return hook.command(self.sql, database=self.database, params=self.params)
+                return hook.command(
+                    self.sql, database=self.database, params=self.params
+                )
             case ActionType.INSERT:
                 return hook.insert(self.sql, data=self.params, database=self.database)
