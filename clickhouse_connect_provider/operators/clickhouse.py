@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 
 from airflow.models import BaseOperator
 
-from clickhouse_connect_provider.hooks.clickhouse_connect import ClickhouseConnectHook
+from clickhouse_connect_provider.hooks.clickhouse import ClickhouseConnectHook
 
 if TYPE_CHECKING:
     from airflow.utils.context import Context

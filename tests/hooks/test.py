@@ -1,6 +1,6 @@
 import unittest
 
-from clickhouse_connect_provider.hooks.clickhouse_connect import ClickhouseConnectHook
+from clickhouse_connect_provider.hooks.clickhouse import ClickhouseConnectHook
 from tests.base_test import BaseClickhouseConnectTest
 
 

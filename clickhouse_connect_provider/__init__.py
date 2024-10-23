@@ -1,4 +1,4 @@
-__version__ = "1.0.0"
+__version__ = "0.0.1"
 
 
 # This is needed to allow Airflow to pick up specific metadata fields it needs for certain features.
@@ -10,7 +10,7 @@ def get_provider_info():
         "connection-types": [
             {
                 "connection-type": "clickhouse-connect",
-                "hook-class-name": "sample_provider.hooks.sample.ClickhouseConnectHook",
+                "hook-class-name": "clickhouse_connect_provider.hooks.clickhouse.ClickhouseConnectHook",
             }
         ],
         "versions": [__version__],  # Required

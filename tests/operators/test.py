@@ -1,7 +1,9 @@
 import unittest
 
+from clickhouse_connect_provider.operators.clickhouse import (
+    ClickhouseConnectOperator,
+)
 from tests.base_test import BaseClickhouseConnectTest
-from clickhouse_connect_provider.operators.clickhouse_connect import ClickhouseConnectOperator
 
 
 class TestClickhouseConnectOperator(BaseClickhouseConnectTest):
