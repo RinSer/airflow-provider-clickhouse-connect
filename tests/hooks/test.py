@@ -8,37 +8,7 @@ from urllib3.poolmanager import PoolManager
 from urllib3.response import HTTPResponse
 
 from clickhouse_connect_provider.hooks.clickhouse_connect import ClickhouseConnectHook
-from tests.urllib3_mock import mockChunckedBody
-
-
-def catch_request(
-    _: PoolManager,
-    method: str,
-    url: str,
-    **kwargs: Any,
-) -> HTTPResponse:
-    resp = HTTPResponse(
-        headers={
-            "X-ClickHouse-Summary": "{}",
-            "X-ClickHouse-Query-Id": "test_query",
-            "transfer-encoding": "chunked",
-        },
-        status=200,
-        version=0,
-        version_string="0",
-        reason="test",
-        preload_content=False,
-        decode_content=False,
-        request_url=url,
-    )
-    if method == "POST":
-        if kwargs.get("body", "") == b"SELECT version(), timezone()":
-            resp._body = b"25\tEurope/Moscow\n"
-        elif b"FROM system.settings" in kwargs.get("body", ""):
-            resp._fp = mockChunckedBody(["\0", "\0"])
-        else:
-            resp._fp = mockChunckedBody(["\0", "\0"])
-    return resp
+from tests.urllib3_mock import mockHttpResponse, mockChunckedBody
 
 
 class TestClickhouseConnectHook(TestCase):
@@ -54,8 +24,28 @@ class TestClickhouseConnectHook(TestCase):
         hook = ClickhouseConnectHook()
         self.assertEqual(hook.connection_id, ClickhouseConnectHook.default_conn_name)
 
-        res = hook.query("SELECT * FROM test WHERE id = {id:Int32}", {"id": 13})
-        self.assertEqual(0, res.row_count)
+        res = hook.query(
+            "SELECT * FROM test_query WHERE id = {id:Int32}", 
+            params={"id": 13},
+            settings={"session_id": 13}
+        )
+        self.assertEqual(1, res.row_count)
+        self.assertEqual(("test",), res.column_names)
+        self.assertEqual((24,), res.first_row)
+        
+    def assert_requests(self):
+        def catch_request(
+            _: PoolManager,
+            method: str,
+            url: str,
+            **kwargs: Any,
+        ) -> HTTPResponse:
+            resp = mockHttpResponse(method, url, **kwargs)
+            if method == "POST":
+                if b"FROM test_query" in kwargs.get("body", b""):
+                    resp._fp = mockChunckedBody(["\x01", "\x01", "\x04test", "\x05Int32", "\x18\x00\x00\x00"])
+            return resp
+        return catch_request
 
     def setUp(self):
         self._conn = patch(
@@ -64,7 +54,7 @@ class TestClickhouseConnectHook(TestCase):
         )
         self.addCleanup(self._conn.stop)
         self._poolmanager = patch(
-            "urllib3.poolmanager.PoolManager.request", new=catch_request
+            "urllib3.poolmanager.PoolManager.request", new=self.assert_requests()
         )
         self.addCleanup(self._poolmanager.stop)
         self._conn.start()
