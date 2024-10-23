@@ -136,6 +136,7 @@ class ClickhouseConnectHook(BaseHook):
         data: Sequence[Sequence[Any]],
         database: str | None = None,
         column_names: str | Iterable[str] = "*",
+        settings: Dict[str, Any] | None = None,
     ) -> QuerySummary:
         """
         Inserts rows to database
@@ -148,9 +149,11 @@ class ClickhouseConnectHook(BaseHook):
         :type database: str | None
         :param column_names: Corresponding column names
         :type column_names: str | Iterable[str] | None
+        :param settings: Query settings
+        :type settings: Dict[str, Any] | None
         """
         return self.get_conn(database=database).insert(
-            table=table, data=data, column_names=column_names
+            table=table, data=data, column_names=column_names, settings=settings
         )
 
     def test_connection(self) -> Tuple[bool, str]:

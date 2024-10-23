@@ -1,5 +1,6 @@
-from io import BytesIO
 from http import client
+from io import BytesIO
+
 from urllib3.response import HTTPResponse
 
 
@@ -7,7 +8,7 @@ class MockSock(object):
     @classmethod
     def makefile(cls, *args, **kwargs):
         return
-    
+
 
 def mockChunckedBody(content: str) -> client.HTTPResponse:
     body = "".join([f"{hex(len(s))}\r\n{s}\r\n" for s in content])
@@ -37,7 +38,8 @@ def mockHttpResponse(method: str, url: str, **kwargs: dict) -> HTTPResponse:
     if method == "POST":
         if kwargs.get("body", "") == b"SELECT version(), timezone()":
             resp._body = b"24\tEurope/Moscow\n"
-        elif b"FROM system.settings" in kwargs.get("body", b"") or \
-            b"SELECT 1 AS check" in kwargs.get("body", b""):
+        elif b"FROM system.settings" in kwargs.get(
+            "body", b""
+        ) or b"SELECT 1 AS check" in kwargs.get("body", b""):
             resp._fp = mockChunckedBody(["\x00", "\x00"])
     return resp
