@@ -5,7 +5,7 @@ __version__ = "0.0.1"
 def get_provider_info():
     return {
         "package-name": "airflow-provider-clickhouse-connect",  # Required
-        "name": "ClickhouseConnect",  # Required
+        "name": "Clickhouse Connect",  # Required
         "description": "A provider to interact with Clickhouse db",  # Required
         "connection-types": [
             {

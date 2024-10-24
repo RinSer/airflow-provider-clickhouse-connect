@@ -21,59 +21,33 @@ class ClickhouseConnectHook(BaseHook):
     :type connection_id: str
     """
 
-    conn_name_attr = "clickhouse_connect_id"
+    conn_name_attr = "clickhouse_conn_id"
     default_conn_name = "clickhouse_connect_default"
-    conn_type = "clickhouse_connect"
+    conn_type = "clickhouse-connect"
     hook_name = "ClickhouseConnect"
-
-    # @staticmethod
-    # def get_connection_form_widgets() -> dict[str, Any]:
-    #     """Returns connection widgets to add to connection form"""
-    #     from flask_appbuilder.fieldwidgets import BS3PasswordFieldWidget, BS3TextFieldWidget
-    #     from flask_babel import lazy_gettext
-    #     from wtforms import PasswordField, StringField
-
-    #     return {
-    #         "account": StringField(lazy_gettext("Account"), widget=BS3TextFieldWidget()),
-    #         "secret_key": PasswordField(lazy_gettext("Secret Key"), widget=BS3PasswordFieldWidget()),
-    #     }
-
-    # @staticmethod
-    # def get_ui_field_behaviour() -> dict:
-    #     """Returns custom field behaviour"""
-    #     import json
-
-    #     return {
-    #         "hidden_fields": ["port", "password", "login", "schema"],
-    #         "relabeling": {},
-    #         "placeholders": {
-    #             "extra": json.dumps(
-    #                 {
-    #                     "example_parameter": "parameter",
-    #                 },
-    #                 indent=4,
-    #             ),
-    #             "account": "HeirFlough",
-    #             "secret_key": "mY53cr3tk3y!",
-    #             "host": "https://www.httpbin.org",
-    #         },
-    #     }
 
     def __init__(
         self,
-        connection_id: str = default_conn_name,
+        clickhouse_conn_id: str = default_conn_name,
+        *args,
+        **kwargs,
     ) -> None:
-        super().__init__()
-        self.connection_id = connection_id
+        super().__init__(*args, **kwargs)
+        self.connection_id = clickhouse_conn_id
 
     def get_conn(
-        self, connection_id: str | None = None, database: str | None = None
+        self,
+        connection_id: str | None = None,
+        database: str | None = None,
+        send_receive_timeout: int = 300,
     ) -> Client:
         """
         Returns Clickhouse Connect Client.
 
-        :param connection_id: db connection ID
+        :param connection_id: DB connection ID
         :type connection_id: dict
+        :param send_receive_timeout: Connection timeout
+        :type send_receive_timeout: int
         """
         conn = self.get_connection(connection_id or self.connection_id)
         return clickhouse_connect.get_client(
@@ -82,6 +56,7 @@ class ClickhouseConnectHook(BaseHook):
             password=conn.password,
             database=database or conn.schema,
             port=conn.port,
+            send_receive_timeout=send_receive_timeout,
         )
 
     def query(
@@ -163,3 +138,24 @@ class ClickhouseConnectHook(BaseHook):
             return True, "Connection successfully tested"
         except Exception as e:
             return False, str(e)
+
+    @staticmethod
+    def get_ui_field_behaviour() -> Dict[str, Any]:
+        """Returns custom field behaviour"""
+        return {
+            "hidden_fields": ["extra"],
+            "relabeling": {
+                "host": "Clickhouse Host",
+                "schema": "Default Database",
+                "port": "Clickhouse HTTP Port",
+                "login": "Clickhouse Username",
+                "password": "Clickhouse Password",
+            },
+            "placeholders": {
+                "host": "localhost",
+                "schema": "default",
+                "port": "8123",
+                "login": "user",
+                "password": "password",
+            },
+        }
