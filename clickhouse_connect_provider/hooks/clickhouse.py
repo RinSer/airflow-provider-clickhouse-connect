@@ -61,7 +61,7 @@ class ClickhouseConnectHook(BaseHook):
     def test_connection(self) -> Tuple[bool, str]:
         """Test a connection"""
         try:
-            self.command("SELECT version()")
+            self.get_conn().command(cmd="SELECT version()")
             return True, "Clickhouse connection successfully tested"
         except Exception as e:
             return False, str(e)
