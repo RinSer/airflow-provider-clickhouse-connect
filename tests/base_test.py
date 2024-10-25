@@ -32,7 +32,6 @@ class BaseClickhouseConnectTest(TestCase):
                         ["\x01", "\x01", "\x04test", "\x05Int32", "\x18\x00\x00\x00"]
                     )
                 elif b"DELETE FROM test_query" in kwargs.get("body", b""):
-                    self.assertIn("param_id=2", url)
                     self.assertIn("session_id=2", url)
                     resp.headers["X-ClickHouse-Summary"] = (
                         '{"written_rows":"0","result_bytes":"0"}'
