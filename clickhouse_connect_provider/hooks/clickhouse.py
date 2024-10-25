@@ -51,7 +51,7 @@ class ClickhouseConnectHook(BaseHook):
         :type kwargs: Dict[str, str]
         """
         conn = self.get_connection(connection_id or self.connection_id)
-        kwargs["pool_mgr"] = get_pool_manager(max_size=10, num_pools=1)
+        kwargs["pool_mgr"] = get_pool_manager(num_pools=1)
         client = clickhouse_connect.get_client(
             host=conn.host,
             username=conn.login,
