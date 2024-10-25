@@ -61,10 +61,13 @@ class ClickhouseConnectHook(BaseHook):
     def test_connection(self) -> Tuple[bool, str]:
         """Test a connection"""
         try:
-            self.get_conn().command(cmd="SELECT version()")
+            client = self.get_conn()
+            client.command(cmd="SELECT version()")
             return True, "Clickhouse connection successfully tested"
         except Exception as e:
             return False, str(e)
+        finally:
+            client.close()
 
     @staticmethod
     def get_ui_field_behaviour() -> Dict[str, Any]:
