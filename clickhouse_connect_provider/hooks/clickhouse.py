@@ -8,6 +8,8 @@ from typing import Tuple
 import clickhouse_connect
 from airflow.hooks.base import BaseHook
 from clickhouse_connect.driver.client import Client
+from clickhouse_connect.driver.httpclient import HttpClient
+from clickhouse_connect.driver.httputil import get_pool_manager
 
 
 class ClickhouseConnectHook(BaseHook):
@@ -49,7 +51,8 @@ class ClickhouseConnectHook(BaseHook):
         :type kwargs: Dict[str, str]
         """
         conn = self.get_connection(connection_id or self.connection_id)
-        return clickhouse_connect.get_client(
+        kwargs["pool_mgr"] = get_pool_manager(max_size=10, num_pools=1)
+        client = clickhouse_connect.get_client(
             host=conn.host,
             username=conn.login,
             password=conn.password,
@@ -57,11 +60,14 @@ class ClickhouseConnectHook(BaseHook):
             port=conn.port,
             **kwargs,
         )
+        if isinstance(client, HttpClient):
+            client._owns_pool_manager = True
+        return client
 
     def test_connection(self) -> Tuple[bool, str]:
         """Test a connection"""
+        client = self.get_conn()
         try:
-            client = self.get_conn()
             client.command(cmd="SELECT version()")
             return True, "Clickhouse connection successfully tested"
         except Exception as e:

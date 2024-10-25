@@ -13,6 +13,11 @@ class TestClickhouseConnectHook(BaseClickhouseConnectTest):
         python -m unittest tests.hooks.test.TestClickhouseConnectHook
     """
 
+    def test_connection(self):
+        success, msg = self.hook.test_connection()
+        self.assertTrue(success)
+        self.assertEqual("Clickhouse connection successfully tested", msg)
+
     def test_query(self):
         res = self.hook.get_conn().query(
             query="SELECT * FROM test_query WHERE id = {id:Int32}",
