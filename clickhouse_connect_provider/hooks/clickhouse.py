@@ -36,7 +36,6 @@ class ClickhouseConnectHook(BaseHook):
         self,
         connection_id: str | None = None,
         database: Optional[str] | None = None,
-        interface: Optional[str] = None,
         **kwargs,
     ) -> Client:
         """
@@ -46,8 +45,6 @@ class ClickhouseConnectHook(BaseHook):
         :type connection_id: dict
         :param database: SQL query database
         :type database: Optional[str] | None
-        :param interface: Defaults to http, or to https if port is set to 8443 or 443
-        :type interface: Dict[str, str]
         :param kwargs: Other connection related settings
         :type kwargs: Dict[str, str]
         """
@@ -57,7 +54,6 @@ class ClickhouseConnectHook(BaseHook):
             username=conn.login,
             password=conn.password,
             database=database or conn.schema,
-            interface=interface,
             port=conn.port,
             **kwargs,
         )
@@ -71,21 +67,6 @@ class ClickhouseConnectHook(BaseHook):
             return False, str(e)
 
     @staticmethod
-    def get_connection_form_widgets() -> dict[str, Any]:
-        """Returns connection widgets to add to connection form"""
-        from flask_appbuilder.fieldwidgets import Select2Widget
-        from flask_babel import lazy_gettext
-        from wtforms import SelectField
-
-        return {
-            "interface": SelectField(
-                lazy_gettext("Interface"),
-                choices=["HTTP", "HTTPS"],
-                widget=Select2Widget(),
-            ),
-        }
-
-    @staticmethod
     def get_ui_field_behaviour() -> Dict[str, Any]:
         """Returns custom field behaviour"""
         return {
@@ -96,7 +77,6 @@ class ClickhouseConnectHook(BaseHook):
                 "port": "Clickhouse HTTP Port",
                 "login": "Clickhouse Username",
                 "password": "Clickhouse Password",
-                "interface": "HTTP or HTTPS interface",
             },
             "placeholders": {
                 "host": "localhost",
@@ -104,6 +84,5 @@ class ClickhouseConnectHook(BaseHook):
                 "port": "8123",
                 "login": "user",
                 "password": "password",
-                "interface": "HTTP or HTTPS",
             },
         }
