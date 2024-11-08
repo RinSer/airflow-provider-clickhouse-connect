@@ -1,22 +1,20 @@
 import unittest
 
-from clickhouse_connect_provider.operators.clickhouse import (
-    ClickhouseConnectOperator,
-)
-from tests.base_test import BaseClickhouseConnectTest
+from clickhouse_provider.operators.query import ClickhouseQueryOperator
+from tests.base_unit_test import BaseClickhouseConnectTest
 
 
-class TestClickhouseConnectOperator(BaseClickhouseConnectTest):
+class TestClickhouseOperators(BaseClickhouseConnectTest):
     """
     Test Clickhouse Connect Operator.
 
     Run test:
 
-        python -m unittest tests.operators.test.TestClickhouseConnectOperator
+        python -m unittest tests.operators.test_unit.TestClickhouseConnectOperator
     """
 
     def test_query(self):
-        op = ClickhouseConnectOperator(
+        op = ClickhouseQueryOperator(
             sql="SELECT * FROM test_query WHERE id = {id:Int32}",
             data={"id": 1},
             settings={"session_id": 1},

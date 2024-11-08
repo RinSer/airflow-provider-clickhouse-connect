@@ -12,7 +12,7 @@ from clickhouse_connect.driver.httpclient import HttpClient
 from clickhouse_connect.driver.httputil import get_pool_manager
 
 
-class ClickhouseConnectHook(BaseHook):
+class ClickhouseHook(BaseHook):
     """
     Clickhouse Connect Hook to interact with Clickhouse db.
 
@@ -21,7 +21,7 @@ class ClickhouseConnectHook(BaseHook):
     """
 
     conn_name_attr = "clickhouse_conn_id"
-    default_conn_name = "clickhouse_connect_default"
+    default_conn_name = "clickhouse_default"
     conn_type = "clickhouse-connect"
     hook_name = "ClickhouseConnect"
 

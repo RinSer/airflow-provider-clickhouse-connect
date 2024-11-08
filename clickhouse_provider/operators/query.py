@@ -7,13 +7,13 @@ from typing import TYPE_CHECKING
 from airflow.models import BaseOperator
 from clickhouse_connect.driver.query import QueryResult
 
-from clickhouse_connect_provider.hooks.clickhouse import ClickhouseConnectHook
+from clickhouse_provider.hooks.client import ClickhouseHook
 
 if TYPE_CHECKING:
     from airflow.utils.context import Context
 
 
-class ClickhouseConnectOperator(BaseOperator):
+class ClickhouseQueryOperator(BaseOperator):
     """
     Execute SQL queries in Clickhouse.
 
@@ -46,7 +46,7 @@ class ClickhouseConnectOperator(BaseOperator):
         self.settings = settings
 
     def execute(self, context: Context) -> QueryResult:
-        hook = ClickhouseConnectHook(self.connection_id)
+        hook = ClickhouseHook(self.connection_id)
         try:
             client = hook.get_conn(database=self.database)
 

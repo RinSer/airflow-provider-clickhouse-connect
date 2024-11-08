@@ -1,16 +1,16 @@
 import unittest
 
-from clickhouse_connect_provider.hooks.clickhouse import ClickhouseConnectHook
-from tests.base_test import BaseClickhouseConnectTest
+from clickhouse_provider.hooks.client import ClickhouseHook
+from tests.base_unit_test import BaseClickhouseConnectTest
 
 
-class TestClickhouseConnectHook(BaseClickhouseConnectTest):
+class TestUnitClickhouseHook(BaseClickhouseConnectTest):
     """
     Test Clickhouse Connect Hook.
 
     Run test:
 
-        python -m unittest tests.hooks.test.TestClickhouseConnectHook
+        python -m unittest tests.hooks.test_unit.TestUnitClickhouseHook
     """
 
     def test_connection(self):
@@ -48,10 +48,8 @@ class TestClickhouseConnectHook(BaseClickhouseConnectTest):
     def setUp(self):
         super().setUp()
 
-        self.hook = ClickhouseConnectHook()
-        self.assertEqual(
-            self.hook.connection_id, ClickhouseConnectHook.default_conn_name
-        )
+        self.hook = ClickhouseHook()
+        self.assertEqual(self.hook.connection_id, ClickhouseHook.default_conn_name)
 
 
 if __name__ == "__main__":
