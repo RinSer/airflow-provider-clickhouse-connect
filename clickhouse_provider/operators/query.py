@@ -47,9 +47,8 @@ class ClickhouseQueryOperator(BaseOperator):
 
     def execute(self, context: Context) -> QueryResult:
         hook = ClickhouseHook(self.connection_id)
+        client = hook.get_conn(database=self.database)
         try:
-            client = hook.get_conn(database=self.database)
-
             self.log.info(f"Executing: {self.sql}")
 
             return client.query(

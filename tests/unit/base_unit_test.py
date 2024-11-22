@@ -7,8 +7,8 @@ from airflow.models import Connection
 from urllib3.poolmanager import PoolManager
 from urllib3.response import HTTPResponse
 
-from tests.urllib3_mock import mockChunckedBody
-from tests.urllib3_mock import mockHttpResponse
+from tests.unit.urllib3_mock import mockChunckedBody
+from tests.unit.urllib3_mock import mockHttpResponse
 
 
 class BaseClickhouseConnectTest(TestCase):

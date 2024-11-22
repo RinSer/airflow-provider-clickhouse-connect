@@ -38,8 +38,22 @@ def mockHttpResponse(method: str, url: str, **kwargs: dict) -> HTTPResponse:
     if method == "POST":
         if kwargs.get("body", "") == b"SELECT version(), timezone()":
             resp._body = b"24\tEurope/Moscow\n"
-        elif b"FROM system.settings" in kwargs.get(
-            "body", b""
-        ) or b"SELECT 1 AS check" in kwargs.get("body", b""):
+        elif b"FROM system.settings" in kwargs.get("body", b""):
+            resp._fp = mockChunckedBody(
+                [
+                    "\x03",
+                    "\x01",
+                    "\x04name",
+                    "\x06String",
+                    "\x16date_time_input_format",
+                    "\x05value",
+                    "\x06String",
+                    "\x05basic",
+                    "\x08readonly",
+                    "\x05UInt8",
+                    "\x00",
+                ]
+            )
+        elif b"SELECT 1 AS check" in kwargs.get("body", b""):
             resp._fp = mockChunckedBody(["\x00", "\x00"])
     return resp

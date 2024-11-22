@@ -1,7 +1,7 @@
 import unittest
 
 from clickhouse_provider.operators.query import ClickhouseQueryOperator
-from tests.base_unit_test import BaseClickhouseConnectTest
+from tests.unit.base_unit_test import BaseClickhouseConnectTest
 
 
 class TestClickhouseOperators(BaseClickhouseConnectTest):
@@ -10,7 +10,7 @@ class TestClickhouseOperators(BaseClickhouseConnectTest):
 
     Run test:
 
-        python -m unittest tests.operators.test_unit.TestClickhouseConnectOperator
+        python -m unittest tests.unit.tests_operators.TestClickhouseOperators
     """
 
     def test_query(self):

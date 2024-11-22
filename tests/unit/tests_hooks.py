@@ -1,7 +1,7 @@
 import unittest
 
 from clickhouse_provider.hooks.client import ClickhouseHook
-from tests.base_unit_test import BaseClickhouseConnectTest
+from tests.unit.base_unit_test import BaseClickhouseConnectTest
 
 
 class TestUnitClickhouseHook(BaseClickhouseConnectTest):
@@ -10,7 +10,7 @@ class TestUnitClickhouseHook(BaseClickhouseConnectTest):
 
     Run test:
 
-        python -m unittest tests.hooks.test_unit.TestUnitClickhouseHook
+        python -m unittest tests.unit.tests_hooks.TestUnitClickhouseHook
     """
 
     def test_connection(self):

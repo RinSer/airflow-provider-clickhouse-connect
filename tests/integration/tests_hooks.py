@@ -1,9 +1,9 @@
 import unittest
 
-from tests.base_integration_test import BaseClickhouseIntegrationTest
-from tests.base_integration_test import TEST_DB
-from tests.base_integration_test import TEST_ROW_COUNT
-from tests.base_integration_test import TEST_TABLE
+from tests.integration.base_integration_test import BaseClickhouseIntegrationTest
+from tests.integration.base_integration_test import TEST_DB
+from tests.integration.base_integration_test import TEST_ROW_COUNT
+from tests.integration.base_integration_test import TEST_TABLE
 
 
 class TestIntegrationClickhouseHook(BaseClickhouseIntegrationTest):
@@ -12,7 +12,7 @@ class TestIntegrationClickhouseHook(BaseClickhouseIntegrationTest):
 
     Run test:
 
-        python -m unittest tests.hooks.test_integration.TestIntegrationClickhouseHook
+        python -m unittest tests.integration.tests_hooks.TestIntegrationClickhouseHook
     """
 
     def test_connection(self):
