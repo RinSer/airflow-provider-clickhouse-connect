@@ -1,6 +1,6 @@
 import unittest
 
-from clickhouse_provider.sensors.bool_sensor import ClickhouseBoolSensor
+from clickhouse_connect_provider.sensors.bool_sensor import ClickhouseBoolSensor
 from tests.integration.base_integration_test import BaseClickhouseIntegrationTest
 from tests.integration.base_integration_test import CONN_ID
 

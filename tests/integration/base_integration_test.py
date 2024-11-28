@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from airflow.models import Connection
 
-from clickhouse_provider.hooks.client import ClickhouseHook
+from clickhouse_connect_provider.hooks.client import ClickhouseHook
 
 
 CONN_ID = "integration_tests"

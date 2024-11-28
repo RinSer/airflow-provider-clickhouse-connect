@@ -1,7 +1,7 @@
 from airflow.sensors.base import BaseSensorOperator
 from airflow.utils.context import Context
 
-from clickhouse_provider.hooks.client import ClickhouseHook
+from clickhouse_connect_provider.hooks.client import ClickhouseHook
 
 
 class ClickhouseBoolSensor(BaseSensorOperator):

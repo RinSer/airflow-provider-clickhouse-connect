@@ -1,6 +1,6 @@
 import unittest
 
-from clickhouse_provider.operators.query import ClickhouseQueryOperator
+from clickhouse_connect_provider.operators.query import ClickhouseQueryOperator
 from tests.integration.base_integration_test import BaseClickhouseIntegrationTest
 from tests.integration.base_integration_test import CONN_ID
 from tests.integration.base_integration_test import TEST_DB
