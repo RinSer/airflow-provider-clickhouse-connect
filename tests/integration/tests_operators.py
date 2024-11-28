@@ -9,7 +9,7 @@ from tests.integration.base_integration_test import TEST_TABLE
 
 class TestIntegrationClickhouseOperator(BaseClickhouseIntegrationTest):
     """
-    Test Clickhouse Connect Hook.
+    Test Clickhouse Connect Operator.
 
     Run test:
 
