@@ -26,11 +26,9 @@ class TestIntegrationClickhouseOperator(BaseClickhouseIntegrationTest):
             settings={"session_id": "test_session"},
             task_id="QUERY_OPERATOR_TEST",
         )
-        res = op.execute(context={})
-        self.assertEqual(row_count, res.row_count)
-        self.assertEqual(("col1", "col2"), res.column_names)
+        result = op.execute()
         for i in range(1, row_count + 1):
-            self.assertIn((i, f"Row {i}"), res.result_rows)
+            self.assertIn((i, f"Row {i}"), result)
 
 
 if __name__ == "__main__":

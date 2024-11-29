@@ -20,10 +20,8 @@ class TestClickhouseOperators(BaseClickhouseConnectTest):
             settings={"session_id": 1},
             task_id="QUERY_TEST",
         )
-        res = op.execute(context={})
-        self.assertEqual(1, res.row_count)
-        self.assertEqual(("test",), res.column_names)
-        self.assertEqual((24,), res.first_row)
+        result = op.execute()
+        self.assertEqual((24,), result[0])
 
 
 if __name__ == "__main__":

@@ -18,14 +18,14 @@ class TestIntegrationClickhouseBoolSensor(BaseClickhouseIntegrationTest):
         self.assertTrue(
             ClickhouseBoolSensor(
                 conn_id=CONN_ID, query="SELECT true", task_id="TEST_TRUE_TASK"
-            ).poke({})
+            ).poke()
         )
 
     def test_false(self):
         self.assertFalse(
             ClickhouseBoolSensor(
                 conn_id=CONN_ID, query="SELECT false", task_id="TEST_FALSE_TASK"
-            ).poke({})
+            ).poke()
         )
 
 

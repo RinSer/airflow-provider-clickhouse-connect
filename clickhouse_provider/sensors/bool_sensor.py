@@ -26,7 +26,7 @@ class ClickhouseBoolSensor(BaseSensorOperator):
         self.query = query
         self.hook = ClickhouseHook(clickhouse_conn_id=conn_id)
 
-    def poke(self, _: Context) -> bool:
+    def poke(self, _: Context = {}) -> bool:
         self.log.info(f"Poking: {self.query}")
         result = self.hook.get_conn().query(self.query)
         return result.first_row[0]

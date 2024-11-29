@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import Any
 from typing import Dict
+from typing import Sequence
 from typing import TYPE_CHECKING
 
 from airflow.models import BaseOperator
-from clickhouse_connect.driver.query import QueryResult
 
 from clickhouse_provider.hooks.client import ClickhouseHook
 
@@ -45,7 +45,7 @@ class ClickhouseQueryOperator(BaseOperator):
         self.connection_id = connection_id
         self.settings = settings
 
-    def execute(self, context: Context) -> QueryResult:
+    def execute(self, _: Context = {}) -> Sequence[Sequence[Any]]:
         hook = ClickhouseHook(self.connection_id)
         client = hook.get_conn(database=self.database)
         try:
@@ -55,6 +55,6 @@ class ClickhouseQueryOperator(BaseOperator):
                 query=self.sql,
                 parameters=self.data,
                 settings=self.settings,
-            )
+            ).result_rows
         finally:
             client.close()
