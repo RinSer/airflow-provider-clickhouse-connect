@@ -45,7 +45,7 @@ class ClickhouseQueryOperator(BaseOperator):
         self.connection_id = connection_id
         self.settings = settings
 
-    def execute(self, _: Context = {}) -> Sequence[Sequence[Any]]:
+    def execute(self, context: Context = {}) -> Sequence[Sequence[Any]]:
         hook = ClickhouseHook(self.connection_id)
         client = hook.get_conn(database=self.database)
         try:

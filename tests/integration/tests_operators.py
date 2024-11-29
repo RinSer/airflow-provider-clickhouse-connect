@@ -26,7 +26,7 @@ class TestIntegrationClickhouseOperator(BaseClickhouseIntegrationTest):
             settings={"session_id": "test_session"},
             task_id="QUERY_OPERATOR_TEST",
         )
-        result = op.execute()
+        result = op.execute(context={})
         for i in range(1, row_count + 1):
             self.assertIn((i, f"Row {i}"), result)
 

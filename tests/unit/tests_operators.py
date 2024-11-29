@@ -20,7 +20,7 @@ class TestClickhouseOperators(BaseClickhouseConnectTest):
             settings={"session_id": 1},
             task_id="QUERY_TEST",
         )
-        result = op.execute()
+        result = op.execute(context={})
         self.assertEqual((24,), result[0])
 
 
