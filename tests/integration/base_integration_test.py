@@ -3,11 +3,11 @@ from unittest.mock import patch
 
 from airflow.models import Connection
 
-from clickhouse_connect_provider.hooks.client import ClickhouseHook
+from clickhouse_provider.hooks.client import ClickhouseHook
 
 
 CONN_ID = "integration_tests"
-TEST_DB = "clickhouse_connect_provider_test"
+TEST_DB = "clickhouse_provider_test"
 TEST_TABLE = "test"
 TEST_ROW_COUNT = 25_000
 

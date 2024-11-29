@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 from airflow.models import BaseOperator
 from clickhouse_connect.driver.query import QueryResult
 
-from clickhouse_connect_provider.hooks.client import ClickhouseHook
+from clickhouse_provider.hooks.client import ClickhouseHook
 
 if TYPE_CHECKING:
     from airflow.utils.context import Context
